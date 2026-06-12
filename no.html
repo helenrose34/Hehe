@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awoyo</title>
     <style>
         body, html {
             margin: 0;
@@ -17,7 +18,10 @@
         /* --- Floating Stickers Background Styles --- */
         #floating-container {
             position: absolute;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
             z-index: 0;
             overflow: hidden;
             pointer-events: none; 
@@ -25,21 +29,31 @@
 
         .floating-sticker {
             position: absolute;
-            background-image: url('sticker2.png');
+            /* FIXED: Added Folder/ here so it finds the image! */
+            background-image: url('Folder/sticker2.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            opacity: 0; /* Opacity is controlled inside the animation */
+            opacity: 0; 
             animation: floatUp linear infinite;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(110vh) translateX(0) scale(0.8); opacity: 0; }
-            10% { opacity: 0.4; } 
-            90% { opacity: 0.4; }
-            100% { transform: translateY(-20vh) translateX(50px) scale(1.1); opacity: 0; }
+            0% { 
+                transform: translateY(110vh) translateX(0) scale(0.8); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 0.4; 
+            } 
+            90% { 
+                opacity: 0.4; 
+            }
+            100% { 
+                transform: translateY(-20vh) translateX(50px) scale(1.1); 
+                opacity: 0; 
+            }
        }
-
 
         /* --- Foreground Content Styles --- */
         .content {
@@ -61,24 +75,19 @@
 
         .main-image {
             margin-top: 30px;
-            max-width: 300px; /* If the dog is still too big, change 300 to 180 or 200! */
+            max-width: 300px; /* Adjust if the main image is too big/small */
             height: auto;
             border-radius: 20px;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Dynamic Floating Background -->
     <div id="floating-container"></div>
 
-    <!-- Main Content -->
     <div class="content">
         <div class="title">awoyo </div>
         <img src="Folder/sticker1.png" alt="Sticker 1" class="main-image">
-        <img src="Folder/sticker2.png" alt="Sticker 2" class="floating-sticker">
-        
     </div>
 
     <script>
@@ -92,7 +101,7 @@
                 let sticker = document.createElement('div');
                 sticker.classList.add('floating-sticker');
                 
-                // Medium sizes ranging from 70px to 120px
+                // Medium sizes ranging from 100px to 150px
                 let size = Math.random() * 50 + 100; 
                 sticker.style.width = `${size}px`;
                 sticker.style.height = `${size}px`;
