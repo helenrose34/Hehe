@@ -34,12 +34,7 @@
             pointer-events: none; 
         }
 
-        .emoji { 
-            position: absolute; 
-            font-size: 2rem; 
-            animation: float 6s linear infinite; 
-        }
-
+        .emoji { position: absolute; font-size: 2rem; animation: float 6s linear infinite; }
         .emoji:nth-child(1) { left: 10%; animation-delay: 0s; }
         .emoji:nth-child(2) { left: 80%; animation-delay: 1.5s; }
         .emoji:nth-child(3) { left: 50%; animation-delay: 3s; }
@@ -51,21 +46,58 @@
             100% { transform: translateY(-10vh); opacity: 0; }
         }
 
-        .card {
+        /* --- 3D FLIP CONTAINER STYLES --- */
+        .flip-container {
+            perspective: 1000px;
             width: 90%; 
             max-width: 550px; 
-            padding: 45px 35px; 
             margin: 0 auto; 
-            text-align: center;
+            position: relative; 
+            z-index: 10;
+        }
+
+        .flipper {
+            transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy spin effect */
+            transform-style: preserve-3d;
+            position: relative;
+            width: 100%;
+        }
+
+        .flipper.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            backface-visibility: hidden;
+            width: 100%;
+            padding: 45px 35px; 
             border-radius: 35px; 
             background: rgba(255, 255, 255, 0.12); 
             backdrop-filter: blur(15px);
             border: 2px solid rgba(255, 255, 255, 0.15); 
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); 
-            position: relative; 
-            z-index: 10;
+            text-align: center;
         }
 
+        .front {
+            position: relative;
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+
+        .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Front Content */
         .tag {
             display: inline-block;
             background: white; 
@@ -77,14 +109,23 @@
             margin-bottom: 25px; 
         }
 
-        .card h1 { font-size: 2.2rem; margin-bottom: 30px; }
+        .front h1 { font-size: 2.2rem; margin-bottom: 30px; }
         .counter { font-size: 8rem; font-weight: 800; text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 183, 3, 0.7); transition: 0.2s; }
         .years { font-size: 2rem; font-weight: 600; margin-top: -15px; }
-        .message { margin-top: 35px; opacity: 0; transform: translateY(20px) scale(0.9); transition: 0.6s ease; }
-        .show { opacity: 1; transform: translateY(0) scale(1); }
-        
+
+        /* Back Content (The Reveal) */
+        .achu-pic {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 5px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+        }
+
         .main-text {
-            font-size: 1.7rem; 
+            font-size: 1.5rem; 
             font-weight: 800; 
             display: inline-block; 
             padding: 10px 22px; 
@@ -93,7 +134,7 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* LOCKED UNBREAKABLE SQUARE SIZE */
+        /* --- CHELAV MODAL --- */
         .modal-card {
             display: none; 
             background: white; 
@@ -102,13 +143,8 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
             text-align: center; 
             z-index: 20;
-            
-            /* THESE LOCK IT INTO A 300x300 SQUARE FOREVER */
             width: 300px !important; 
             height: 300px !important; 
-            min-width: 300px !important;
-            max-width: 300px !important;
-            
             margin: 0 auto;
             position: relative;
             transform: translateY(-200%); 
@@ -122,15 +158,8 @@
         .buttons { position: relative; width: 100%; height: 60px; margin: 0 auto; }
         
         .modal-card button { 
-            position: absolute; 
-            width: 100px; 
-            height: 40px; 
-            border: none; 
-            border-radius: 8px; 
-            font-size: 15px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            color: white; 
+            position: absolute; width: 100px; height: 40px; border: none; border-radius: 8px; 
+            font-size: 15px; cursor: pointer; font-weight: bold; color: white; 
         }
         
         #btn-yes { left: 15px; top: 0; background-color: #2ecc71; transition: 0.2s; }
@@ -138,14 +167,7 @@
         
         #btn-no { right: 15px; top: 0; background-color: #e74c3c; transition: left 0.08s ease-out, top 0.08s ease-out, right 0.08s ease-out !important; }
 
-        .chelav-gif {
-            width: 100%;
-            max-width: 150px;
-            height: 100px; 
-            object-fit: contain; 
-            border-radius: 8px;
-            margin-top: 15px; 
-        }
+        .chelav-gif { width: 100%; max-width: 150px; height: 100px; object-fit: contain; border-radius: 8px; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -158,16 +180,29 @@
     </div>
 
     <div class="container">
-        <div class="card" id="scanner-card">
-            <div class="tag">AI Birthday Scanner</div>
-            <h1>What age are you turning this year? 🤔</h1>
-            <div class="counter" id="counter">0</div>
-            <div class="years">Years Old</div>
-            <div class="message" id="message">
-                <div class="main-text">🎉 Shashtipoorthi Ashamsakal Nenbo 👴</div>
+        <!-- THE FLIP CONTAINER -->
+        <div class="flip-container" id="scanner-container">
+            <div class="flipper" id="flipper">
+                
+                <!-- FRONT OF CARD -->
+                <div class="front card-face">
+                    <div class="tag">AI Birthday Scanner</div>
+                    <h1>What age are you turning this year? 🤔</h1>
+                    <div class="counter" id="counter">0</div>
+                    <div class="years">Years Old</div>
+                </div>
+
+                <!-- BACK OF CARD (The Reveal) -->
+                <div class="back card-face">
+                    <!-- Automatically pulls from your Folder! -->
+                    <img src="Folder/sticker5.png" alt="Achu" class="achu-pic">
+                    <div class="main-text">🎉 Shashtipoorthi Ashamsakal Nenbo 👴</div>
+                </div>
+
             </div>
         </div>
 
+        <!-- THE BILL MODAL (Hides until later) -->
         <div class="modal-card" id="bill-container">
             <h2><b>Chelav</b></h2>
             <div class="buttons">
@@ -179,11 +214,11 @@
     </div>
 
     <script>
-        const scannerCard = document.getElementById('scanner-card');
+        const scannerContainer = document.getElementById('scanner-container');
+        const flipper = document.getElementById('flipper');
         const emojisContainer = document.getElementById('emojis-container');
         const billContainer = document.getElementById('bill-container');
         const counter = document.getElementById("counter");
-        const message = document.getElementById("message");
         const btnNo = document.getElementById('btn-no');
         const btnYes = document.getElementById('btn-yes');
         const btnContainer = document.querySelector('.buttons');
@@ -191,8 +226,6 @@
         let count = 0;
         const target = 60;
 
-        // FIXED: Removed window.onload so the editor doesn't ignore it. 
-        // It will now start counting immediately!
         setTimeout(updateCounter, 800);
 
         function updateCounter() {
@@ -207,14 +240,18 @@
                 
                 setTimeout(updateCounter, 35);
             } else {
-                message.classList.add("show");
-                
+                // 1. Wait a tiny bit after hitting 60, then FLIP the card!
                 setTimeout(() => {
-                    scannerCard.style.display = 'none';
+                    flipper.classList.add('flipped');
+                }, 400);
+                
+                // 2. Wait exactly 3 seconds after the flip, then show the Chelav box
+                setTimeout(() => {
+                    scannerContainer.style.display = 'none';
                     emojisContainer.style.display = 'none';
                     document.body.style.background = "#f4f7f6"; 
                     billContainer.style.display = 'block';
-                }, 4000);
+                }, 3400); // 400ms for the flip delay + 3000ms holding time
             }
         }
 
