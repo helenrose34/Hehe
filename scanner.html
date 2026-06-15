@@ -24,7 +24,6 @@
             transition: background 0.5s ease;
         }
 
-        /* THE MISSING PIECE I ACCIDENTALLY DELETED! */
         .container {
             width: 100%;
             text-align: center;
@@ -32,7 +31,6 @@
             z-index: 10;
         }
 
-        /* --- MAGIC WAND EMOJIS --- */
         #emojis-container { 
             position: absolute; 
             top: 0; 
@@ -46,10 +44,9 @@
         .emoji { 
             position: absolute; 
             font-size: 2rem; 
-            opacity: 0; 
-            animation: float 6s linear infinite backwards; 
+            animation: float 6s linear infinite; 
         }
-        
+
         .emoji:nth-child(1) { left: 10%; animation-delay: 0s; }
         .emoji:nth-child(2) { left: 80%; animation-delay: 1.5s; }
         .emoji:nth-child(3) { left: 50%; animation-delay: 3s; }
@@ -57,16 +54,25 @@
 
         @keyframes float {
             0% { transform: translateY(100vh); opacity: 1; }
-            80% { opacity: 1; }
+            50% { opacity: 0; }
             100% { transform: translateY(-10vh); opacity: 0; }
         }
 
-        /* --- 3D FLIP CONTAINER STYLES --- */
+        /* --- CONFETTI STYLES --- */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 9999; 
+        }
+
+        /* --- 3D FLIP CONTAINER --- */
         .flip-container {
             perspective: 1000px;
             width: 90%; 
-            max-width: 400px; 
-            height: 500px; /* Hard height so it NEVER collapses */
+            max-width: 550px; 
+            height: 520px; 
             margin: 0 auto; 
             position: relative; 
         }
@@ -83,7 +89,6 @@
             transform: rotateY(180deg);
         }
 
-        /* Structure for both faces of the card */
         .card-face {
             backface-visibility: hidden;
             position: absolute; 
@@ -91,7 +96,7 @@
             left: 0;
             width: 100%;
             height: 100%; 
-            padding: 40px 20px; 
+            padding: 45px 35px; 
             border-radius: 35px; 
             background: rgba(255, 255, 255, 0.12); 
             backdrop-filter: blur(15px);
@@ -104,16 +109,9 @@
             align-items: center;
         }
 
-        .front {
-            z-index: 2;
-            transform: rotateY(0deg);
-        }
+        .front { z-index: 2; transform: rotateY(0deg); }
+        .back { transform: rotateY(180deg); }
 
-        .back {
-            transform: rotateY(180deg);
-        }
-
-        /* Front Content */
         .tag {
             display: inline-block;
             background: white; 
@@ -125,14 +123,12 @@
             margin-bottom: 25px; 
         }
 
-        .front h1 { font-size: 2.2rem; margin-bottom: 30px; line-height: 1.2; }
-        .counter { font-size: 7.5rem; font-weight: 800; text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 183, 3, 0.7); transition: 0.2s; line-height: 1; }
-        .years { font-size: 1.8rem; font-weight: 600; margin-top: 5px; }
-
-        /* Back Content (The Reveal) */
+        .front h1 { font-size: 2.2rem; margin-bottom: 30px; }
+        .counter { font-size: 8rem; font-weight: 800; text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 183, 3, 0.7); transition: 0.2s; }
+        .years { font-size: 2rem; font-weight: 600; margin-top: -15px; }
+        
         .achu-pic {
-            width: 200px;
-            height: 200px;
+            width: 220px; height: 220px;
             object-fit: cover;
             border-radius: 20px;
             border: 5px solid white;
@@ -141,26 +137,21 @@
         }
 
         .main-text {
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            display: inline-block; 
-            padding: 10px 18px; 
+            font-size: 1.7rem; font-weight: 800; 
+            display: inline-block; padding: 10px 22px; 
             border-radius: 18px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 224, 102, 0.28)); 
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* --- CHELAV MODAL --- */
+        /* --- MODAL --- */
         .modal-card {
             display: none; 
-            background: white; 
-            padding: 20px; 
+            background: white; padding: 20px; 
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
-            text-align: center; 
-            z-index: 20;
-            width: 300px !important; 
-            height: 300px !important; 
+            text-align: center; z-index: 20;
+            width: 300px !important; height: 300px !important; 
             margin: 0 auto;
             position: relative;
             transform: translateY(-200%); 
@@ -170,19 +161,11 @@
         @keyframes dropIn { to { transform: translateY(0); } }
         
         .modal-card h2 { color: #333; margin-top: 10px; margin-bottom: 20px; font-size: 2.2rem; }
-
         .buttons { position: relative; width: 100%; height: 60px; margin: 0 auto; }
-        
-        .modal-card button { 
-            position: absolute; width: 100px; height: 40px; border: none; border-radius: 8px; 
-            font-size: 15px; cursor: pointer; font-weight: bold; color: white; 
-        }
+        .modal-card button { position: absolute; width: 100px; height: 40px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: bold; color: white; }
         
         #btn-yes { left: 15px; top: 0; background-color: #2ecc71; transition: 0.2s; }
-        #btn-yes:hover { background-color: #27ae60; transform: scale(1.05); }
-        
         #btn-no { right: 15px; top: 0; background-color: #e74c3c; transition: left 0.08s ease-out, top 0.08s ease-out, right 0.08s ease-out !important; }
-
         .chelav-gif { width: 100%; max-width: 150px; height: 100px; object-fit: contain; border-radius: 8px; margin-top: 15px; }
     </style>
 </head>
@@ -198,19 +181,16 @@
     <div class="container">
         <div class="flip-container" id="scanner-container">
             <div class="flipper" id="flipper">
-                
-                <div class="front card-face">
+                <div class="card-face front">
                     <div class="tag">AI Birthday Scanner</div>
                     <h1>What age are you turning this year? 🤔</h1>
                     <div class="counter" id="counter">0</div>
                     <div class="years">Years Old</div>
                 </div>
-
-                <div class="back card-face">
+                <div class="card-face back">
                     <img src="Folder/sticker5.png" alt="Achu" class="achu-pic">
                     <div class="main-text">🎉 Shashtipoorthi Ashamsakal Nenbo 👴</div>
                 </div>
-
             </div>
         </div>
 
@@ -234,6 +214,38 @@
         const btnYes = document.getElementById('btn-yes');
         const btnContainer = document.querySelector('.buttons');
         
+        // --- CONFETTI LOGIC ---
+        const colors = ["#ff4d4d", "#ffd93d", "#6bcB77", "#4d96ff", "#ff6bcb", "#ff9f1c"];
+
+        function launchConfetti(side){
+            const originX = side === "left" ? 0 : window.innerWidth;
+            for(let i=0; i<150; i++){
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                
+                if (Math.random() > 0.5) confetti.style.borderRadius = "50%";
+                
+                confetti.style.background = colors[Math.floor(Math.random()*colors.length)];
+                confetti.style.left = originX + "px";
+                confetti.style.top = window.innerHeight + "px";
+                document.body.appendChild(confetti);
+
+                const angle = side === "left" ? (Math.random()*60 + 20) : (Math.random()*60 + 100);
+                const velocity = Math.random()*500 + 400;
+                const vx = Math.cos(angle * Math.PI/180) * velocity;
+                const vy = -Math.sin(angle * Math.PI/180) * velocity;
+                const rotation = Math.random()*1080;
+
+                confetti.animate([
+                    { transform: `translate(0,0) rotate(0deg)`, opacity:1 },
+                    { transform: `translate(${vx}px,${vy}px) rotate(${rotation}deg)`, opacity:1, offset:0.6 },
+                    { transform: `translate(${vx*1.2}px,${vy+500}px) rotate(${rotation+360}deg)`, opacity:0 }
+                ],{ duration:3000, easing:"cubic-bezier(.1,.8,.2,1)", fill:"forwards" });
+
+                setTimeout(()=>confetti.remove(),3000);
+            }
+        }
+        
         let count = 0;
         const target = 60;
 
@@ -244,46 +256,41 @@
                 count++;
                 counter.innerText = count;
                 counter.style.transform = "scale(1.15) rotate(2deg)";
-                
-                setTimeout(() => { 
-                    counter.style.transform = "scale(1) rotate(0deg)"; 
-                }, 100);
-                
+                setTimeout(() => { counter.style.transform = "scale(1) rotate(0deg)"; }, 100);
                 setTimeout(updateCounter, 35);
             } else {
-                setTimeout(() => {
-                    flipper.classList.add('flipped');
-                }, 400);
+                // 1. Instant Party Popper when it hits 60!
+                launchConfetti("left");
+                launchConfetti("right");
+
+                // 2. Wait exactly 2 seconds, THEN flip the card
+                setTimeout(() => { 
+                    flipper.classList.add('flipped'); 
+                }, 2000);
                 
+                // 3. Wait 3 seconds after the flip to let him read it, then show Chelav Modal
+                // (2000ms delay + 3000ms reading time = 5000ms total)
                 setTimeout(() => {
                     scannerContainer.style.display = 'none';
                     emojisContainer.style.display = 'none';
                     document.body.style.background = "#f4f7f6"; 
                     billContainer.style.display = 'block';
-                }, 3400); 
+                }, 5000);
             }
         }
 
         function dodgeButton() {
             btnNo.style.transform = "none";
             btnNo.style.right = "auto"; 
-            
             const maxX = btnContainer.clientWidth - btnNo.offsetWidth;
             const maxY = btnContainer.clientHeight - btnNo.offsetHeight;
-            
             btnNo.style.left = Math.floor(Math.random() * maxX) + "px";
             btnNo.style.top = Math.floor(Math.random() * maxY) + "px";
         }
 
         btnNo.addEventListener('mouseenter', dodgeButton);
-        btnNo.addEventListener('touchstart', (e) => { 
-            e.preventDefault(); 
-            dodgeButton(); 
-        });
-
-        btnYes.addEventListener('click', () => {
-            window.location.href = 'good.html';
-        });
+        btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeButton(); });
+        btnYes.addEventListener('click', () => { window.location.href = 'good.html'; });
     </script>
 </body>
 </html>
