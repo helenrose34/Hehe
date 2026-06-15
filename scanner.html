@@ -24,6 +24,14 @@
             transition: background 0.5s ease;
         }
 
+        .confetti{
+            position:fixed;
+            width:10px;
+            height:10px;
+            pointer-events:none;
+            z-index: 9999;
+        }
+
         .container {
             width: 100%;
             text-align: center;
@@ -56,15 +64,6 @@
             0% { transform: translateY(100vh); opacity: 1; }
             50% { opacity: 0; }
             100% { transform: translateY(-10vh); opacity: 0; }
-        }
-
-        /* --- CONFETTI STYLES --- */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            pointer-events: none;
-            z-index: 9999; 
         }
 
         /* --- 3D FLIP CONTAINER --- */
@@ -214,33 +213,68 @@
         const btnYes = document.getElementById('btn-yes');
         const btnContainer = document.querySelector('.buttons');
         
-        // --- CONFETTI LOGIC ---
-        const colors = ["#ff4d4d", "#ffd93d", "#6bcB77", "#4d96ff", "#ff6bcb", "#ff9f1c"];
+        const colors = [
+            "#ff4d4d",
+            "#ffd93d",
+            "#6bcB77",
+            "#4d96ff",
+            "#ff6bcb",
+            "#ff9f1c"
+        ];
 
         function launchConfetti(side){
+
             const originX = side === "left" ? 0 : window.innerWidth;
+
             for(let i=0; i<150; i++){
+
                 const confetti = document.createElement("div");
                 confetti.className = "confetti";
-                
-                if (Math.random() > 0.5) confetti.style.borderRadius = "50%";
-                
-                confetti.style.background = colors[Math.floor(Math.random()*colors.length)];
+
+                confetti.style.background =
+                    colors[Math.floor(Math.random()*colors.length)];
+
                 confetti.style.left = originX + "px";
                 confetti.style.top = window.innerHeight + "px";
+
                 document.body.appendChild(confetti);
 
-                const angle = side === "left" ? (Math.random()*60 + 20) : (Math.random()*60 + 100);
+                const angle =
+                    side === "left"
+                    ? (Math.random()*60 + 20)
+                    : (Math.random()*60 + 100);
+
                 const velocity = Math.random()*500 + 400;
+
                 const vx = Math.cos(angle * Math.PI/180) * velocity;
                 const vy = -Math.sin(angle * Math.PI/180) * velocity;
+
                 const rotation = Math.random()*1080;
 
                 confetti.animate([
-                    { transform: `translate(0,0) rotate(0deg)`, opacity:1 },
-                    { transform: `translate(${vx}px,${vy}px) rotate(${rotation}deg)`, opacity:1, offset:0.6 },
-                    { transform: `translate(${vx*1.2}px,${vy+500}px) rotate(${rotation+360}deg)`, opacity:0 }
-                ],{ duration:3000, easing:"cubic-bezier(.1,.8,.2,1)", fill:"forwards" });
+                    {
+                        transform:
+                        `translate(0,0) rotate(0deg)`,
+                        opacity:1
+                    },
+                    {
+                        transform:
+                        `translate(${vx}px,${vy}px)
+                         rotate(${rotation}deg)`,
+                        opacity:1,
+                        offset:0.6
+                    },
+                    {
+                        transform:
+                        `translate(${vx*1.2}px,${vy+500}px)
+                         rotate(${rotation+360}deg)`,
+                        opacity:0
+                    }
+                ],{
+                    duration:3000,
+                    easing:"cubic-bezier(.1,.8,.2,1)",
+                    fill:"forwards"
+                });
 
                 setTimeout(()=>confetti.remove(),3000);
             }
@@ -257,25 +291,23 @@
                 counter.innerText = count;
                 counter.style.transform = "scale(1.15) rotate(2deg)";
                 setTimeout(() => { counter.style.transform = "scale(1) rotate(0deg)"; }, 100);
-                setTimeout(updateCounter, 35);
-            } else {
-                // 1. Instant Party Popper when it hits 60!
-                launchConfetti("left");
-                launchConfetti("right");
-
-                // 2. Wait exactly 2 seconds, THEN flip the card
-                setTimeout(() => { 
-                    flipper.classList.add('flipped'); 
-                }, 2000);
                 
-                // 3. Wait 3 seconds after the flip to let him read it, then show Chelav Modal
-                // (2000ms delay + 3000ms reading time = 5000ms total)
-                setTimeout(() => {
-                    scannerContainer.style.display = 'none';
-                    emojisContainer.style.display = 'none';
-                    document.body.style.background = "#f4f7f6"; 
-                    billContainer.style.display = 'block';
-                }, 5000);
+                // Fire immediately when count reaches 60
+                if (count === target) {
+                    launchConfetti("left");
+                    launchConfetti("right");
+
+                    setTimeout(() => { flipper.classList.add('flipped'); }, 2000);
+                    
+                    setTimeout(() => {
+                        scannerContainer.style.display = 'none';
+                        emojisContainer.style.display = 'none';
+                        document.body.style.background = "#f4f7f6"; 
+                        billContainer.style.display = 'block';
+                    }, 5000);
+                } else {
+                    setTimeout(updateCounter, 35);
+                }
             }
         }
 
