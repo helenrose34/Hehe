@@ -3,110 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yay!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Yay! 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            background: radial-gradient(circle at top left, #ffb703, #fb8500, #1d3557); 
-            color: white; 
-            font-family: 'Poppins', sans-serif; 
-            overflow: hidden; 
-            position: relative;
-        }
-
-        /* --- FLOATING STICKER STYLES --- */
-        .bg-sticker {
-            position: absolute;
-            bottom: -150px;
-            pointer-events: none;
-            z-index: 1; 
-            /* Opacity is now handled entirely by the animation below */
-            animation: floatUp linear infinite;
-        }
-
-        @keyframes floatUp {
-            0% { 
-                transform: translateY(0) rotate(0deg); 
-                opacity: 0.15; /* Starts with some opacity at the bottom */
-            }
-            50% { 
-                opacity: 0.15; /* Holds that opacity until it reaches the center */
-            }
-            100% { 
-                transform: translateY(-110vh) rotate(360deg); 
-                opacity: 0; /* Fades into nothing exactly as it reaches the top */
-            }
-        }
-
-        /* --- MAIN CARD STYLES --- */
-        .card {
-            width: 90%; 
-            max-width: 450px; 
-            padding: 50px 30px; 
-            border-radius: 35px; 
-            background: rgba(255, 255, 255, 0.12); 
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); 
-            text-align: center;
-            z-index: 10; 
-        }
-
-        .card h1 { 
-            font-size: 2.5rem; 
-            margin-bottom: 15px; 
-            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background-color: #f4f7f6; 
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
         }
         
-        .card p { 
-            font-size: 1.2rem; 
-            font-weight: 600; 
-            opacity: 0.9;
+        .wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .sticker {
+            width: 150px; 
+            height: auto;
+            position: absolute;
+            top: -110px; 
+            z-index: 2;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .modal-card {
+            background: white; padding: 50px; border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        h1 { color: #2ecc71; font-size: 3.5rem; margin: 0; }
     </style>
 </head>
 <body>
 
-    <!-- Main Content -->
-    <div class="card">
-        <h1>Good Boy! 🎉</h1>
-        <p>Thanks for the Chelav! 🥳</p>
+    <div class="wrapper">
+        <img src="Folder/sticker4.png" alt="Sticker" class="sticker">
+        
+        <div class="modal-card">
+            <h1>Killaadi Achumwon vaazhka </h1>
+        </div>
     </div>
 
-    <script>
-        function createFloatingStickers() {
-            const totalStickers = 15; 
-            
-            for(let i = 0; i < totalStickers; i++) {
-                const sticker = document.createElement("img");
-                sticker.src = "Folder/sticker4.png"; 
-                sticker.className = "bg-sticker";
-                
-                const size = Math.random() * 60 + 50; 
-                const leftPos = Math.random() * 100; 
-                const duration = Math.random() * 12 + 10; 
-                const delay = Math.random() * 15; 
-                
-                sticker.style.width = size + "px";
-                sticker.style.left = leftPos + "vw"; /* Still randomizes horizontal start point, but travels straight up! */
-                sticker.style.animationDuration = duration + "s";
-                sticker.style.animationDelay = delay + "s";
-                
-                document.body.appendChild(sticker);
-            }
-        }
-
-        createFloatingStickers();
-    </script>
 </body>
 </html>
