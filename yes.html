@@ -58,6 +58,25 @@
             margin-top: 20px; opacity: 0; transform: scale(0.8); transition: all 1.5s ease;
         }
         #gift-btn:hover { transform: translateY(-5px) scale(1.05) !important; box-shadow: 0 15px 25px rgba(243, 156, 18, 0.6); }
+
+        /* --- MOBILE RESPONSIVENESS FIXES --- */
+        @media (max-width: 600px) {
+            #stage1-wrapper {
+                gap: 15px !important; /* Pulls everything tighter together */
+            }
+            .sticker {
+                width: 120px !important; /* Shrinks the stickers so they take up less vertical space */
+            }
+            #sweet-message {
+                font-size: 14vw !important; /* Dynamically scales the text to fit the screen width */
+                line-height: 1.2; 
+            }
+            #gift-btn {
+                padding: 15px 30px !important; /* Slims down the button height */
+                font-size: 1.2rem !important;
+                margin-top: 5px !important;
+            }
+        }
     </style>
 </head>
 <body>
